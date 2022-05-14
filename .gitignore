@@ -23,3 +23,8 @@ CMakeSettings.json
 
 # Screenshots
 screenshots/
+
+#project regulations
+instructions.html
+instructions.pdf
+instructions.md

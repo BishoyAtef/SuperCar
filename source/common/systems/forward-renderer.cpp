@@ -239,11 +239,12 @@ namespace our {
             //TODO: (Req 10) Return to the default framebuffer
             //test
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
+            glBindVertexArray(postProcessVertexArray);
             //test
             //TODO: (Req 10) Setup the postprocess material and draw the fullscreen triangle
             //test
             postprocessMaterial->setup();
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
             //test
         }
     }

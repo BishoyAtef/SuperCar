@@ -37,6 +37,8 @@ namespace our {
         // - the up direction which is the vector (0,1,0) but after being transformed by M
         // then you can use glm::lookAt
         
+        // since the eye , center and up vectors are in the camera space so to get get them back in the world space
+        // we should multiply them by the inverse of camera matrix which is {M}
         glm::mat4 view = glm::lookAt(
             glm::vec3(M * glm::vec4(0, 0, 0, 1)),
             glm::vec3(M * glm::vec4(0, 0, -1, 1)),
@@ -57,7 +59,9 @@ namespace our {
         // For the perspective camera, you can use glm::perspective
 
         glm::mat4 projection(1.0f);
+        // aspect ratio = width  / height
         float aspectRatio = float(viewportSize[0])/viewportSize[1];
+        
         if(cameraType == CameraType::ORTHOGRAPHIC)
             projection = glm::ortho(orthoHeight*aspectRatio/2, orthoHeight*aspectRatio/2, orthoHeight/2, orthoHeight/2);
         else

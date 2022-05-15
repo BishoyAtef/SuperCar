@@ -14,6 +14,7 @@ namespace our {
         // This constructor creates an OpenGL sampler and saves its object name in the member variable "name" 
         Sampler() {
             //TODO: (Req 5) Complete this function
+            // generating the sampler that holds the condition of choosing the color to the 2d sampler
             glGenSamplers(1, &name);
             
         };
@@ -21,6 +22,7 @@ namespace our {
         // This deconstructor deletes the underlying OpenGL sampler
         ~Sampler() { 
             //TODO: (Req 5) Complete this function
+            // deleting the sampler 
             glDeleteSamplers(1, &name);
             
          }
@@ -28,12 +30,14 @@ namespace our {
         // This method binds this sampler to the given texture unit
         void bind(GLuint textureUnit) const {
             //TODO: (Req 5) Complete this function
+            // binding the sampler at the given texture unit
             glBindSampler(textureUnit, name);
         }
 
         // This static method ensures that no sampler is bound to the given texture unit
         static void unbind(GLuint textureUnit){
             //TODO: (Req 5) Complete this function
+            // unbind any sampler attached to the given texture unit
             glBindSampler(textureUnit, 0);
         }
 

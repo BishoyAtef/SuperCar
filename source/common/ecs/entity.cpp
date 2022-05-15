@@ -12,8 +12,8 @@ namespace our {
     // its parent's parent's matrix and so on till you reach the root.
     glm::mat4 Entity::getLocalToWorldMatrix() const {
         //TODO: (Req 7) Write this function
-        glm::mat4 temp (1.0f);
         
+        // getting the localToWorld matrix by recursive calling for this function 
         if(parent)
             return parent->getLocalToWorldMatrix() * this->localTransform.toMat4();
 

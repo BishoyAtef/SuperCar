@@ -28,7 +28,9 @@ namespace our {
     // set the "tint" uniform to the value in the member variable tint 
     void TintedMaterial::setup() const {
         //TODO: (Req 6) Write this function
+        // setup the material by setup the pipeline state and set the shader to be used
         Material::setup();
+        // sending tinted color to the uniform {tint}
         shader->set("tint", tint);
     }
 
@@ -47,10 +49,13 @@ namespace our {
         TintedMaterial::setup();
         shader->set("alphaThreshold", alphaThreshold);
 
-
+        // activating texture unit 0
         glActiveTexture(GL_TEXTURE0);
+        // binding the texture to texture unit 0
         glBindTexture(GL_TEXTURE_2D, texture->getOpenGLName());
+        // binding the sampler to texture unit 0
         sampler->bind(0);
+        // sending the texture unit number to the 2d sampler {tex}
         glUniform1i(shader->getUniformLocation("tex"), 0);
 
     }

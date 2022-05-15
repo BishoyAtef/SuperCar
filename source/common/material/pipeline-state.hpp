@@ -55,7 +55,9 @@ namespace our {
                 glEnable(GL_CULL_FACE);
             else
                 glDisable(GL_CULL_FACE);
+            //telling opengl which face will be removed
             glCullFace(faceCulling.culledFace);
+            //telling opengl which is the front face
             glFrontFace(faceCulling.frontFace);
 
             // setting Depth and Color masks

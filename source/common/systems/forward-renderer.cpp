@@ -23,14 +23,15 @@ namespace our {
             // Hints: the sky will be draw after the opaque objects so we would need depth testing but which depth funtion should we pick?
             // We will draw the sphere from the inside, so what options should we pick for the face culling.
             
-            //test
             PipelineState skyPipelineState;
+            //first we enable faceculling
             skyPipelineState.faceCulling.enabled = true;
+            //then we tell opengl that the removed face is the front face of object
             skyPipelineState.faceCulling.culledFace = GL_FRONT;
 
+            //first we enable the depth testing to apply the depth test equation in the following line
             skyPipelineState.depthTesting.enabled = true;
             skyPipelineState.depthTesting.function = GL_LEQUAL;
-            //test
 
             // Load the sky texture (note that we don't need mipmaps since we want to avoid any unnecessary blurring while rendering the sky)
             std::string skyTextureFile = config.value<std::string>("sky", "");
@@ -57,23 +58,23 @@ namespace our {
         // Then we check if there is a postprocessing shader in the configuration
         if(config.contains("postprocess")){
             //TODO: (Req 10) Create a framebuffer
-            //test
+            //if there is a postprocess framebuffer then generate it and bind it
             glGenFramebuffers(1, &postprocessFrameBuffer);
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
-            //test
+            
             //TODO: (Req 10) Create a color and a depth texture and attach them to the framebuffer
             // Hints: The color format can be (Red, Green, Blue and Alpha components with 8 bits for each channel).
             // The depth format can be (Depth component with 24 bits).
-            //test
-            colorTarget=texture_utils::empty(GL_RGBA8,windowSize);
+            //using the empty function created in requirement 4 we create the following two textures by specifing the formte of the texture and the window size
+            colorTarget = texture_utils::empty(GL_RGBA8,windowSize);
             depthTarget = texture_utils::empty(GL_DEPTH_COMPONENT24, windowSize);
+            //attach the framebuffer to the above two textures
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTarget->getOpenGLName(), 0);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTarget->getOpenGLName(), 0);
-            //test
+            
             //TODO: (Req 10) Unbind the framebuffer just to be safe
-            //test
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            //test
+            
             // Create a vertex array to use for drawing the texture
             glGenVertexArrays(1, &postProcessVertexArray);
 
@@ -193,20 +194,15 @@ namespace our {
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
             //TODO: (Req 9) setup the sky material
-            //test
             skyMaterial->setup();
-            //test
             //TODO: (Req 9) Get the camera position
-            //test
             glm::vec3 cameraPosition = camera->getOwner()->getLocalToWorldMatrix()*glm::vec4(0,0,0,1);
-            //test
             //TODO: (Req 9) Create a model matrix for the sky such that it always follows the camera (sky sphere center = camera position)
-            //test
-            glm::mat4 identity(1.0f);
-            glm::mat4 M= glm::translate(identity,cameraPosition);
-            //test
+            glm::mat4 identity(1.0f); 
+            glm::mat4 M = glm::translate(identity,cameraPosition);
             //TODO: (Req 9) We want the sky to be drawn behind everything (in NDC space, z=1)
             // We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?
+            //scaled the Z with zero then translate it with 1 so it is in the far Z direction so any thing will be drawn above it
             glm::mat4 alwaysBehindTransform = glm::mat4(
             //  Row1, Row2, Row3, Row4
                 1.0f, 0.0f, 0.0f, 0.0f, // Column1
@@ -233,15 +229,11 @@ namespace our {
         // If there is a postprocess material, apply postprocessing
         if(postprocessMaterial){
             //TODO: (Req 10) Return to the default framebuffer
-            //test
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             glBindVertexArray(postProcessVertexArray);
-            //test
             //TODO: (Req 10) Setup the postprocess material and draw the fullscreen triangle
-            //test
             postprocessMaterial->setup();
             glDrawArrays(GL_TRIANGLES, 0, 3);
-            //test
         }
     }
 }

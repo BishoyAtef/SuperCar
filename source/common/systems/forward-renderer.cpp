@@ -65,12 +65,8 @@ namespace our {
             // Hints: The color format can be (Red, Green, Blue and Alpha components with 8 bits for each channel).
             // The depth format can be (Depth component with 24 bits).
             //test
-            // colorTarget = new Texture2D();
-            // depthTarget = new Texture2D();
-            // colorTarget->bind();
-            // glTextureStorage2D(GL_TEXTURE_2D, 1, GL_RGBA, windowSize.x, windowSize.y);
-            // depthTarget->bind();
-            // glTextureStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y);
+            colorTarget=texture_utils::empty(GL_RGBA8,windowSize);
+            depthTarget = texture_utils::empty(GL_DEPTH_COMPONENT24, windowSize);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTarget->getOpenGLName(), 0);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTarget->getOpenGLName(), 0);
             //test
@@ -238,7 +234,7 @@ namespace our {
         if(postprocessMaterial){
             //TODO: (Req 10) Return to the default framebuffer
             //test
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             glBindVertexArray(postProcessVertexArray);
             //test
             //TODO: (Req 10) Setup the postprocess material and draw the fullscreen triangle

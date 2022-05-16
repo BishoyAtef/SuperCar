@@ -63,7 +63,7 @@ namespace our {
         float aspectRatio = float(viewportSize[0])/viewportSize[1];
         
         if(cameraType == CameraType::ORTHOGRAPHIC)
-            projection = glm::ortho(orthoHeight*aspectRatio/2, orthoHeight*aspectRatio/2, orthoHeight/2, orthoHeight/2);
+            projection = glm::ortho(orthoHeight*aspectRatio/2, orthoHeight*aspectRatio/2, orthoHeight/(-2), orthoHeight/2);
         else
             projection = glm::perspective(fovY, aspectRatio, near, far);
 

@@ -291,6 +291,7 @@ int our::Application::run(int run_for_frames) {
                 std::cerr << "Failed to save a Screenshot" << std::endl;
             }
         }
+
         // There are any requested screenshots, take them
         while(requested_screenshots.size()){ 
             if(const auto& request = requested_screenshots.top(); request.first == current_frame){

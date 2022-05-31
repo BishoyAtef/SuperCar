@@ -23,10 +23,6 @@
                 "textured":{
                     "vs":"assets/shaders/textured.vert",
                     "fs":"assets/shaders/textured.frag"
-                },
-                "light":{
-                    "vs":"assets/shaders/light.vert",
-                    "fs":"assets/shaders/light.frag"
                 }
             },
             "textures":{
@@ -34,12 +30,7 @@
                 "grass": "assets/textures/grass_ground_d.jpg",
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
-                "monkey": "assets/textures/monkey.png",
-                "albedo": "assets/textures/albedo.jpg",
-                "ambient_occlusion": "assets/textures/ambient_occlusion.jpg",
-                "emissive": "assets/textures/emissive.jpg",
-                "roughness": "assets/textures/roughness.jpg",
-                "specular": "assets/textures/specular.jpg"
+                "monkey": "assets/textures/monkey.png"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
@@ -105,8 +96,8 @@
                     "sampler": "default"
                 },
                 "monkey":{
-                    "type": "lighted",
-                    "shader": "light",
+                    "type": "textured",
+                    "shader": "textured",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -115,26 +106,9 @@
                             "enabled": true
                         }
                     },
-                    "lighted": true,
-                    "albedo": "albedo",
-                    "ambient_occlusion": "ambient_occlusion",
-                    "emissive": "emissive",
-                    "roughness": "roughness",
-                    "specular": "specular",
+                    "tint": [1, 1, 1, 1],
+                    "texture": "monkey",
                     "sampler": "default"
-                    // "type": "textured",
-                    // "shader": "textured",
-                    // "pipelineState": {
-                    //     "faceCulling":{
-                    //         "enabled": false
-                    //     },
-                    //     "depthTesting":{
-                    //         "enabled": true
-                    //     }
-                    // },
-                    // "tint": [1, 1, 1, 1],
-                    // "texture": "monkey",
-                    // "sampler": "default"
                 },
                 "moon":{
                     "type": "textured",

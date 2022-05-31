@@ -49,6 +49,7 @@ int main(int argc, char** argv) {
     app.registerState<MaterialTestState>("material-test");
     app.registerState<EntityTestState>("entity-test");
     app.registerState<RendererTestState>("renderer-test");
+    app.registerState<GameState>("game");
     // Then choose the state to run based on the option "start-scene" in the config
     if(app_config.contains(std::string{"start-scene"})){
         app.changeState(app_config["start-scene"].get<std::string>());

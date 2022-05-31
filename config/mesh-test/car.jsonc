@@ -1,0 +1,22 @@
+{
+    "start-scene": "mesh-test",
+    "window":
+    {
+        "title":"Mesh Test Window",
+        "size":{
+            "width":1000,
+            "height":1000
+        },
+        "fullscreen": false
+    },
+    "screenshots":{
+        "directory": "screenshots/mesh-test",
+        "requests": [
+            { "file": "monkey-0.png", "frame":  1 }
+        ]
+    },
+    "scene": {
+        "mesh": "assets/models/car6.obj",
+        "output_type": 0
+    }
+}

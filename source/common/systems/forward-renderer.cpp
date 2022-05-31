@@ -1,9 +1,7 @@
 #include "forward-renderer.hpp"
 #include "../mesh/mesh-utils.hpp"
 #include "../texture/texture-utils.hpp"
-#define DIRECTIONAL 0
-#define POINT 1
-#define SPOT 2
+
 namespace our {
 
     void ForwardRenderer::initialize(glm::ivec2 windowSize, const nlohmann::json& config){
@@ -130,7 +128,6 @@ namespace our {
         CameraComponent* camera = nullptr;
         opaqueCommands.clear();
         transparentCommands.clear();
-        lightedCommands.clear();
         for(auto entity : world->getEntities()){
             // If we hadn't found a camera yet, we look for a camera in this entity
             if(!camera) camera = entity->getComponent<CameraComponent>();
@@ -145,9 +142,6 @@ namespace our {
                 // if it is transparent, we add it to the transparent commands list
                 if(command.material->transparent){
                     transparentCommands.push_back(command);
-                } else if (command.material->lighted){
-                // if it is lighted, we add it to the transparent commands list
-                    lightedCommands.push_back(command);
                 } else {
                 // Otherwise, we add it to the opaque command list
                     opaqueCommands.push_back(command);
@@ -196,46 +190,7 @@ namespace our {
             shader->set("transform", VP * opaqueCommands[i].localToWorld);
             opaqueCommands[i].mesh->draw();
         }
-        // Draw all the lighted commands
-        for (int i=0; i<lightedCommands.size(); i++){
-            lightedCommands[i].material->setup();
-
-            glm::mat4 M = lightedCommands[i].localToWorld;
-            glm::mat4 M_IT = glm::transpose(glm::inverse(M));
-            glm::vec3 eye = camera->getOwner()->localTransform.position;
-
-            lightedCommands[i].material->shader->set("M", M);
-            lightedCommands[i].material->shader->set("M_IT", M_IT);
-            lightedCommands[i].material->shader->set("VP", VP);
-            lightedCommands[i].material->shader->set("eye", eye);
-
-            lightedCommands[i].material->shader->set("sky.top", glm::vec3(0.3f, 0.6f, 1.0f));
-            lightedCommands[i].material->shader->set("sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
-            lightedCommands[i].material->shader->set("sky.bottom", glm::vec3( 0.1f, 0.1f, 0.0f));
-            
-            lightedCommands[i].material->shader->set("light_count", 3);
-
-            lightedCommands[i].material->shader->set("lights[0].type", DIRECTIONAL);
-            lightedCommands[i].material->shader->set("lights[0].direction", glm::vec3(1, 0, 0));
-            lightedCommands[i].material->shader->set("lights[0].diffuse", glm::vec3(1, 0.2, 0.1));
-            lightedCommands[i].material->shader->set("lights[0].specular", glm::vec3(1, 0.2, 0.1));
-            
-            lightedCommands[i].material->shader->set("lights[1].type", POINT);
-            lightedCommands[i].material->shader->set("lights[1].position", glm::vec3(0, 1.5f, 0));
-            lightedCommands[i].material->shader->set("lights[1].diffuse", glm::vec3(1, 0.2, 0.1));
-            lightedCommands[i].material->shader->set("lights[1].specular", glm::vec3(1, 0.2, 0.1));
-            lightedCommands[i].material->shader->set("lights[1].attenuation",glm::vec3( 1, 0, 0));
-
-            lightedCommands[i].material->shader->set("lights[2].type", SPOT);
-            lightedCommands[i].material->shader->set("lights[2].position", glm::vec3( 1, 1, 0));
-            lightedCommands[i].material->shader->set("lights[2].direction", glm::vec3(-1, 0, 0));
-            lightedCommands[i].material->shader->set("lights[2].diffuse", glm::vec3(1, 0.9, 0.7));
-            lightedCommands[i].material->shader->set("lights[2].specular", glm::vec3(1, 0.9, 0.7));
-            lightedCommands[i].material->shader->set("lights[2].attenuation",glm::vec3(1, 0, 0));
-            lightedCommands[i].material->shader->set("lights[2].cone_angles",glm::vec2( glm::radians(10.0f), glm::radians(11.0f)));
-
-            lightedCommands[i].mesh->draw();
-        }
+        
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
             //TODO: (Req 9) setup the sky material
@@ -256,7 +211,7 @@ namespace our {
                 0.0f, 0.0f, 1.0f, 1.0f  // Column4
             );
             //TODO: (Req 9) set the "transform" uniform
-            glm::mat4 skyTransform = alwaysBehindTransform * VP * M ;
+            glm::mat4 skyTransform = alwaysBehindTransform * VP *  M  ;
             skyMaterial->shader->set("transform", skyTransform);
             //TODO: (Req 9) draw the sky sphere
             skySphere->draw();

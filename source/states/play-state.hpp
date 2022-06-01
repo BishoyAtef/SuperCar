@@ -15,6 +15,7 @@ class Playstate: public our::State {
     our::ForwardRenderer renderer;
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
+    //our::GameMovement movementSystem;
 
     void onInitialize() override {
         // First of all, we get the scene configuration from the app config
@@ -32,6 +33,8 @@ class Playstate: public our::State {
         // Then we initialize the renderer
         auto size = getApp()->getFrameBufferSize();
         renderer.initialize(size, config["renderer"]);
+
+        //movementSystem.storeCollision(&world);
     }
 
     void onDraw(double deltaTime) override {
@@ -76,6 +79,8 @@ class GameState: public our::State {
         // Then we initialize the renderer
         auto size = getApp()->getFrameBufferSize();
         renderer.initialize(size, config["renderer"]);
+
+        movementSystem.storeCollision(&world);
     }
 
     void onDraw(double deltaTime) override {

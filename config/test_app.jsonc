@@ -171,7 +171,7 @@
                 ],
                 "children": [
                     {
-                        "position": [0, -1.9, -1.5],
+                        "position": [0, -1.0, -1.8],
                         "rotation": [0, -90, 0],
                         "scale": [0.009, 0.009, 0.01],
                         "components": [
@@ -179,13 +179,18 @@
                                 "type": "Mesh Renderer",
                                 "mesh": "car",
                                 "material": "moon"
+                            },
+                            {
+                                "type": "Collision",
+                                "radius": 10.0,
+                                "store": false
                             }
                         ]
                     }
                 ]
             },
             {   
-                "position": [-5, -1.9, -5],
+                "position": [-5, -1.0, -5],
                 "scale": [1, 1, 1],
                 "rotation": [0, 0, 0],
                 "components": [
@@ -196,14 +201,19 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0, 0.1],
+                        "linearVelocity": [0, 0, 0.2],
                         "angularVelocity": [0, 45, 0]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 10.0,
+                        "store": true
                     }
                 ]
             },
             {
                 "rotation": [0, 0, 0],
-                "position": [5, -1.9, -1],
+                "position": [5, -1.0, -1],
                 "scale": [1, 1, 1],
                 "components": [
                     {
@@ -213,14 +223,19 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0, 0.1],
+                        "linearVelocity": [0, 0, 0.2],
                         "angularVelocity": [0, 45, 0]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 10.0,
+                        "store": true
                     }
                 ]
             },
             {
                 "rotation": [0, 0, 0],
-                "position": [3, -1.9, -15],
+                "position": [3, -1.0, -15],
                 "scale": [2, 2, 2],
                 "components": [
                     {
@@ -230,14 +245,19 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0, 0.1],
+                        "linearVelocity": [0, 0, 0.2],
                         "angularVelocity": [0, 45, 0]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 10.0,
+                        "store": true
                     }
                 ]
             },
             {
                 "position": [0, 2.1, -6],
-                "scale": [2, -1.9, 2],
+                "scale": [2, -1.7, 2],
                 "components": [
                     {
                         "type": "Mesh Renderer",
@@ -247,15 +267,48 @@
                     {
                         "type": "Movement",
                         "angularVelocity": [0, 45, 0]
-                    },
-                    {
-                        
                     }
                 ]
             },
             {
                 "rotation": [-90, 0, 0],
                 "position": [0, -2, -2],
+                "scale": [15, 15, 20],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "road"
+                    }
+                ]
+            },
+            {
+                "rotation": [-90, 0, 0],
+                "position": [0, -2, -4],
+                "scale": [15, 15, 20],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "road"
+                    }
+                ]
+            },
+            {
+                "rotation": [-90, 0, 0],
+                "position": [0, -2, -6],
+                "scale": [15, 15, 20],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "road"
+                    }
+                ]
+            },
+            {
+                "rotation": [-90, 0, 0],
+                "position": [0, -2, -8],
                 "scale": [15, 15, 20],
                 "components": [
                     {

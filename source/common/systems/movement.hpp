@@ -36,43 +36,61 @@ namespace our
 
 
     class GameMovement : public MovementSystem {
-     private:
-        float road_Y = 0;
     
     public:
 
-       // tracking the Y-coordinates of the road
-       void trackRoad(World* world) {
-        Material* roadMatrial = AssetLoader<Material>::get("road");
-        for(auto entity : world->getEntities()){
-                // 
-                MeshRendererComponent* comp = entity->getComponent<MeshRendererComponent>();
-                // 
-                if(comp->material == roadMatrial){
-                    // 
-                    road_Y = entity->localTransform.position.y;
+        std::vector<CollisionComponent*> collisionObjects;
+        std::vector<glm::vec3> collisionPositions;
+
+        glm::vec3 carPosition;
+        float carRadius = 0.0;
+        void storeCollision(World* world) {
+            std::cout<<"storing the collisions"<<std::endl<<std::endl;
+            for(auto entity : world->getEntities()){
+                CollisionComponent* collision = entity->getComponent<CollisionComponent>();
+                if(!(collision->store)) {
+                
+                    carRadius = collision->radius;
+                    carPosition = entity->localTransform.position;
                     
+                }else {
+                    // If the movement component exists
+                    collisionObjects.push_back(collision);
+                    collisionPositions.push_back(entity->localTransform.position);
                 }
             }
+        }
 
-       }
-
+        bool checkCollision() {
+            for(int i=0; i<collisionObjects.size(); i++) {
+                glm::vec3 dist = collisionPositions[i] - carPosition;
+                float temp1 = glm::dot(dist, dist);
+                if(glm::sqrt(temp1) <= collisionObjects[i]->radius + carRadius) {
+                    std::cout<<"there is a collision"<<std::endl<<std::endl;
+                    return true;
+                }
+                std::cout<<"no collision for object "<<i<<std::endl<<std::endl;
+            }
+            return false;
+        }
 
 
         // This should be called every frame to update all entities containing a MovementComponent. 
         void update(World* world, float deltaTime) {
-            
-            trackRoad(world);
+            bool collide = checkCollision();
+            if(collide) {
+                std::cout<<"there is a collision"<<std::endl<<std::endl;
+            }
+
             // For each entity in the world
             for(auto entity : world->getEntities()){
+
                 // Get the movement component if it exists
                 MovementComponent* movement = entity->getComponent<MovementComponent>();
                 // If the movement component exists
                 if(movement){
                     // Change the position and rotation based on the linear & angular velocity and delta time.
                     entity->localTransform.position += deltaTime * movement->linearVelocity;
-                    entity->localTransform.position.y = road_Y + 0.1;
-
                     entity->localTransform.rotation += deltaTime * movement->angularVelocity;
                 }
             }

@@ -20,4 +20,16 @@ namespace our {
         void deserialize(const nlohmann::json& data) override;
     };
 
+    class CollisionComponent : public Component {
+    
+    public:
+        float radius;
+        bool store;
+        // The ID of this component type is "Mesh Renderer"
+        static std::string getID() { return "Collision"; }
+
+        // Receives the mesh & material from the AssetLoader by the names given in the json object
+        void deserialize(const nlohmann::json& data) override;
+    };
+
 }

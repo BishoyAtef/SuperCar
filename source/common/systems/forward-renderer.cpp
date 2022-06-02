@@ -140,9 +140,7 @@ namespace our {
                 command.mesh = meshRenderer->mesh;
                 command.material = meshRenderer->material;
 
-                // getting the collision component
-
-                command.collision = entity->getComponent<CollisionComponent>();
+                command.draw = entity->drawMesh;
                 // if it is transparent, we add it to the transparent commands list
                 if(command.material->transparent){
                     transparentCommands.push_back(command);
@@ -189,12 +187,12 @@ namespace our {
         //TODO: (Req 8) Draw all the opaque commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
         for(int i=0; i<opaqueCommands.size(); i++){
-            //if(opaqueCommands[i].collision != collide) {
+            if(opaqueCommands[i].draw) {
                 opaqueCommands[i].material->setup();
                 ShaderProgram* shader = opaqueCommands[i].material->shader;
                 shader->set("transform", VP * opaqueCommands[i].localToWorld);
                 opaqueCommands[i].mesh->draw();
-            //}
+            }
         }
         
         // If there is a sky material, draw the sky
@@ -225,12 +223,12 @@ namespace our {
         //TODO: (Req 8) Draw all the transparent commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
          for(int i=0; i<transparentCommands.size(); i++){
-            //if(transparentCommands[i].collision != collide) {
+            if(transparentCommands[i].draw) {
                 transparentCommands[i].material->setup();
                 ShaderProgram* shader = transparentCommands[i].material->shader;
                 shader->set("transform", VP * transparentCommands[i].localToWorld);
                 transparentCommands[i].mesh->draw();
-            //}
+            }
            
         }
 

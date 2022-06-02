@@ -298,7 +298,7 @@
             {
                 "rotation": [0, 0, 0],
                 "position": [0, -1.0, -20],
-                "scale": [3, 3, 3],
+                "scale": [1, 1, 1],
                 "components": [
                     {
                         "type": "Mesh Renderer",
@@ -320,7 +320,7 @@
             {
                 "rotation": [0, 0, 0],
                 "position": [0, -1.0, -10],
-                "scale": [4, 1, 1],
+                "scale": [1, 1, 1],
                 "components": [
                     {
                         "type": "Mesh Renderer",

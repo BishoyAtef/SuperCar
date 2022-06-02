@@ -20,7 +20,7 @@ namespace our
         glm::vec3 center;
         Mesh* mesh;
         Material* material;
-        CollisionComponent* collision = nullptr;
+        bool draw = true;    // recently added
     };
 
     // A forward renderer is a renderer that draw the object final color directly to the framebuffer

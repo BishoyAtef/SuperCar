@@ -95,48 +95,65 @@ namespace our
             }
         }
 
-        CollisionComponent* checkCollision() {
+        void checkCollision() {
             for(int i=0; i<collisionObjects.size(); i++) {
                 if(glm::distance(collisionPositions[i], carPosition) <= (collisionObjects[i]->radius + carRadius)) {
                     //std::cout<<"there is a collision"<<std::endl<<std::endl;
                     
                     std::cout<<"collision at radius "<<collisionObjects[i]->radius<<std::endl<<std::endl;
-                    CollisionComponent* comp1 = checkSpeedUp(i);
-                    if(! comp1)
-                        return checkBarrier(i);
-                    return comp1;
+                    checkSpeedUp(i);
+                    checkBarrier(i);
+                  
                 }
                 //std::cout<<"radius of the collision is "<<collisionObjects[i]->radius<<std::endl<<std::endl;
             }
-            return nullptr;
         }
 
-        CollisionComponent* checkSpeedUp(int i) {
+        void checkSpeedUp(int i) {
             if(collisionObjects[i]->function == "speedup" && !collideBefore[i]){
                 std::cout<<"collision with a speedup"<<std::endl<<std::endl;
                 speedUp +=5;
                 collideBefore[i] = true;
-                return collisionObjects[i];
+                collisionEntities[i]->drawMesh = false;
+                numOfCollisions --;
             }
-            collisionObjects[i] = nullptr;
-            return nullptr;
         }
 
-        CollisionComponent* checkBarrier(int i) {
+        void checkBarrier(int i) {
             if(collisionObjects[i]->function == "barrier" && !collideBefore[i]){
                 std::cout<<"collision with a barrier"<<std::endl<<std::endl;
                 collideBefore[i] = true;
-                return collisionObjects[i];
+                collisionEntities[i]->drawMesh = false;
+                numOfCollisions --;
             }
-            collisionObjects[i] = nullptr;
-            return nullptr;
 
         }
+
+        void checkPassByBarrier() {
+             for(int i=0; i<collisionObjects.size(); i++) {
+               if((collisionPositions[i].z >= carPosition.z)  && !collideBefore[i] ) {
+                   numOfCollisions --;
+                   collideBefore[i] = true;
+                   std::cout<<"Passed by a Barrier"<<std::endl<<std::endl;
+               }
+
+            }
+        }
+
+        void checkWin() {
+            std::cout<<"Number of collisions left is "<<numOfCollisions<<std::endl<<std::endl;
+            if(numOfCollisions == 0) {
+                std::cout<<"YOU WIN"<<std::endl<<std::endl;
+            }
+        }
+
         // This should be called every frame to update all entities containing a MovementComponent. 
         void update(World* world, float deltaTime) {
             
             getPositions(world);
-
+            checkPassByBarrier();
+            checkWin();
+            checkCollision();
             // For each entity in the world
             for(auto entity : world->getEntities()){
 
@@ -152,7 +169,7 @@ namespace our
                 }
             }
 
-            //return checkCollision();
+            
         }
 
     };

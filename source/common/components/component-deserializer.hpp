@@ -22,7 +22,7 @@ namespace our {
         } else if (type == MovementComponent::getID()) {
             component = entity->addComponent<MovementComponent>();
         } else if (type == CollisionComponent::getID()) {
-            component = entity->addComponent<MovementComponent>();
+            component = entity->addComponent<CollisionComponent>();
         }
         if(component) component->deserialize(data);
     }

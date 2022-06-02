@@ -14,8 +14,9 @@ namespace our {
     void CollisionComponent::deserialize(const nlohmann::json& data){
         if(!data.is_object()) return;
         // Notice how we just get a string from the json file and pass it to the AssetLoader to get us the actual asset
-        radius = (float) data.value("radius", 1.0);
-        store = data.value("store", true);
+        radius = data["radius"].get<float>();
+        store = data["store"].get<bool>();
+        function = data.value("function", "");
     }
 
 }

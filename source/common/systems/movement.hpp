@@ -1,4 +1,5 @@
-#pragma once
+
+//#pragma once
 
 #include "../ecs/world.hpp"
 #include "../components/movement.hpp"
@@ -35,52 +36,106 @@ namespace our
     };
 
 
-    class GameMovement : public MovementSystem {
+    class GameMovement{
     
     public:
 
         std::vector<CollisionComponent*> collisionObjects;
         std::vector<glm::vec3> collisionPositions;
+        std::vector<Entity*> collisionEntities;
+        std::vector<bool> collideBefore;
 
         glm::vec3 carPosition;
         float carRadius = 0.0;
+        Entity* carEntity;
+
+        float roadPosition_x = 15.0;
+
+        float speedUp = 0.0;
+
+        int numOfCollisions = 0;
+
         void storeCollision(World* world) {
             std::cout<<"storing the collisions"<<std::endl<<std::endl;
             for(auto entity : world->getEntities()){
                 CollisionComponent* collision = entity->getComponent<CollisionComponent>();
-                if(!(collision->store)) {
-                
-                    carRadius = collision->radius;
-                    carPosition = entity->localTransform.position;
+                if(collision) {
+                    if(!(collision->store)) {
+                        std::cout<<"storing the car radius"<<std::endl<<std::endl;
+                        carRadius = collision->radius;
+                        //carPosition = entity->localTransform.position;
+                        carEntity = entity;
+                        
+                    }else {
+                        // If the movement component exists
+                        std::cout<<"storing a possible collision"<<std::endl<<std::endl;
+                        collisionObjects.push_back(collision);
+                        collisionEntities.push_back(entity);
+                        collideBefore.push_back(false);
+                    }
+                }
+            }
+            numOfCollisions = collisionObjects.size();
+            std::cout<<"number of possible collisions is "<<numOfCollisions<<std::endl<<std::endl;
+        }
+
+        void getPositions(World* world) {
+            collisionPositions.clear();
+            for(auto entity : world->getEntities()){
+                CollisionComponent* collision = entity->getComponent<CollisionComponent>();
+                if(collision) {
+                    if(!(collision->store)) {
                     
-                }else {
-                    // If the movement component exists
-                    collisionObjects.push_back(collision);
-                    collisionPositions.push_back(entity->localTransform.position);
+                        carPosition = entity->getLocalToWorldMatrix()*glm::vec4(0,0,0,1);
+                        
+                    }else {
+                        collisionPositions.push_back(entity->getLocalToWorldMatrix()*glm::vec4(0,0,0,1));
+                    }
                 }
             }
         }
 
-        bool checkCollision() {
+        CollisionComponent* checkCollision() {
             for(int i=0; i<collisionObjects.size(); i++) {
-                glm::vec3 dist = collisionPositions[i] - carPosition;
-                float temp1 = glm::dot(dist, dist);
-                if(glm::sqrt(temp1) <= collisionObjects[i]->radius + carRadius) {
-                    std::cout<<"there is a collision"<<std::endl<<std::endl;
-                    return true;
+                if(glm::distance(collisionPositions[i], carPosition) <= (collisionObjects[i]->radius + carRadius)) {
+                    //std::cout<<"there is a collision"<<std::endl<<std::endl;
+                    
+                    std::cout<<"collision at radius "<<collisionObjects[i]->radius<<std::endl<<std::endl;
+                    CollisionComponent* comp1 = checkSpeedUp(i);
+                    if(! comp1)
+                        return checkBarrier(i);
+                    return comp1;
                 }
-                std::cout<<"no collision for object "<<i<<std::endl<<std::endl;
+                //std::cout<<"radius of the collision is "<<collisionObjects[i]->radius<<std::endl<<std::endl;
             }
-            return false;
+            return nullptr;
         }
 
+        CollisionComponent* checkSpeedUp(int i) {
+            if(collisionObjects[i]->function == "speedup" && !collideBefore[i]){
+                std::cout<<"collision with a speedup"<<std::endl<<std::endl;
+                speedUp +=5;
+                collideBefore[i] = true;
+                return collisionObjects[i];
+            }
+            collisionObjects[i] = nullptr;
+            return nullptr;
+        }
 
+        CollisionComponent* checkBarrier(int i) {
+            if(collisionObjects[i]->function == "barrier" && !collideBefore[i]){
+                std::cout<<"collision with a barrier"<<std::endl<<std::endl;
+                collideBefore[i] = true;
+                return collisionObjects[i];
+            }
+            collisionObjects[i] = nullptr;
+            return nullptr;
+
+        }
         // This should be called every frame to update all entities containing a MovementComponent. 
         void update(World* world, float deltaTime) {
-            bool collide = checkCollision();
-            if(collide) {
-                std::cout<<"there is a collision"<<std::endl<<std::endl;
-            }
+            
+            getPositions(world);
 
             // For each entity in the world
             for(auto entity : world->getEntities()){
@@ -91,9 +146,13 @@ namespace our
                 if(movement){
                     // Change the position and rotation based on the linear & angular velocity and delta time.
                     entity->localTransform.position += deltaTime * movement->linearVelocity;
+                    entity->localTransform.position.z += deltaTime * speedUp;
+
                     entity->localTransform.rotation += deltaTime * movement->angularVelocity;
                 }
             }
+
+            //return checkCollision();
         }
 
     };

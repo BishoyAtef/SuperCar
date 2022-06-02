@@ -139,6 +139,10 @@ namespace our {
                 command.center = glm::vec3(command.localToWorld * glm::vec4(0, 0, 0, 1));
                 command.mesh = meshRenderer->mesh;
                 command.material = meshRenderer->material;
+
+                // getting the collision component
+
+                command.collision = entity->getComponent<CollisionComponent>();
                 // if it is transparent, we add it to the transparent commands list
                 if(command.material->transparent){
                     transparentCommands.push_back(command);
@@ -185,10 +189,12 @@ namespace our {
         //TODO: (Req 8) Draw all the opaque commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
         for(int i=0; i<opaqueCommands.size(); i++){
-            opaqueCommands[i].material->setup();
-            ShaderProgram* shader = opaqueCommands[i].material->shader;
-            shader->set("transform", VP * opaqueCommands[i].localToWorld);
-            opaqueCommands[i].mesh->draw();
+            //if(opaqueCommands[i].collision != collide) {
+                opaqueCommands[i].material->setup();
+                ShaderProgram* shader = opaqueCommands[i].material->shader;
+                shader->set("transform", VP * opaqueCommands[i].localToWorld);
+                opaqueCommands[i].mesh->draw();
+            //}
         }
         
         // If there is a sky material, draw the sky
@@ -219,10 +225,12 @@ namespace our {
         //TODO: (Req 8) Draw all the transparent commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
          for(int i=0; i<transparentCommands.size(); i++){
-            transparentCommands[i].material->setup();
-            ShaderProgram* shader = transparentCommands[i].material->shader;
-            shader->set("transform", VP * transparentCommands[i].localToWorld);
-            transparentCommands[i].mesh->draw();
+            //if(transparentCommands[i].collision != collide) {
+                transparentCommands[i].material->setup();
+                ShaderProgram* shader = transparentCommands[i].material->shader;
+                shader->set("transform", VP * transparentCommands[i].localToWorld);
+                transparentCommands[i].mesh->draw();
+            //}
            
         }
 

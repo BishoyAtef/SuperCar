@@ -15,7 +15,6 @@ class Playstate: public our::State {
     our::ForwardRenderer renderer;
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
-    //our::GameMovement movementSystem;
 
     void onInitialize() override {
         // First of all, we get the scene configuration from the app config
@@ -42,7 +41,7 @@ class Playstate: public our::State {
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
-        renderer.render(&world);
+        //renderer.render(&world);
     }
 
     void onDestroy() override {
@@ -60,7 +59,7 @@ class GameState: public our::State {
 
     our::World world;
     our::ForwardRenderer renderer;
-    our::FreeCameraControllerSystem cameraController;
+    our::GameCameraController cameraController;
     our::GameMovement movementSystem;
 
     void onInitialize() override {

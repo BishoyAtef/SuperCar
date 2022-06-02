@@ -12,7 +12,6 @@ namespace our {
     public:
         Mesh* mesh; // The mesh that should be drawn
         Material* material; // The material used to draw the mesh
-
         // The ID of this component type is "Mesh Renderer"
         static std::string getID() { return "Mesh Renderer"; }
 
@@ -25,6 +24,7 @@ namespace our {
     public:
         float radius;
         bool store;
+        std::string function = "";
         // The ID of this component type is "Mesh Renderer"
         static std::string getID() { return "Collision"; }
 

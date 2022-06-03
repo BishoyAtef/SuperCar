@@ -54,7 +54,11 @@ class Playstate: public our::State {
     }
 };
 
-
+/**
+ * @brief this class represents the first mode/state of the game 
+ * In this mode (mode 1), if the car hitted two barriers then the player loses 
+ * 
+ */
 class GameState: public our::State {
 
     bool loaded = false;
@@ -84,6 +88,72 @@ class GameState: public our::State {
         auto size = getApp()->getFrameBufferSize();
         renderer.initialize(size, config["renderer"]);
 
+        // we initialize the collision components
+        movementSystem.storeCollision(&world);
+    }
+
+    void onDraw(double deltaTime) override {
+        // Here, we just run a bunch of systems to control the world logic
+        // the update function checks that the player has lost the game or not and updates the position of all entities
+        bool lose = movementSystem.update(&world, (float)deltaTime);
+        cameraController.update(&world, (float)deltaTime);
+        // And finally we use the renderer system to draw the scene 
+        // if the player has lost then we render the same frame each time
+        if (!lose)
+            renderer.render(&world);
+
+        // if the  (Q) button is hitted then return to the menu
+        if(getApp()->getKeyboard().isPressed(GLFW_KEY_Q)){
+            getApp()->changeState("menu");
+        };
+    }
+    ~GameState(){
+        // Don't forget to destroy the renderer
+        renderer.destroy();
+        // On exit, we call exit for the camera controller system to make sure that the mouse is unlocked
+        cameraController.exit();        
+    }
+};
+
+
+
+/**
+ * @brief this class represents the second mode/state of the game 
+ * In this mode (mode 2), the player deos not lose but we track his score
+ * if he hits a barrier then his score decreases by 1
+ * if he gets a SpeedUp then his speed will increase and his score will increase   
+ * 
+ */
+class GameState2: public our::State {
+
+    bool loaded = false;
+    our::World world;
+    our::ForwardRenderer renderer;
+    our::GameCameraController cameraController;
+    our::GameMovement2 movementSystem;
+
+    void onInitialize() override {
+        if (loaded){
+            return;
+        }
+        loaded = true;
+        // First of all, we get the scene configuration from the app config
+        auto& config = getApp()->getConfig()["scene"];
+        // If we have assets in the scene config, we deserialize them
+        if(config.contains("assets")){
+            our::deserializeAllAssets(config["assets"]);
+        }
+        // If we have a world in the scene config, we use it to populate our world
+        if(config.contains("world")){
+            world.deserialize(config["world"]);
+        }
+        // We initialize the camera controller system since it needs a pointer to the app
+        cameraController.enter(getApp());
+        // Then we initialize the renderer
+        auto size = getApp()->getFrameBufferSize();
+        renderer.initialize(size, config["renderer"]);
+
+        // storing the collision objects
         movementSystem.storeCollision(&world);
     }
 
@@ -98,7 +168,7 @@ class GameState: public our::State {
             getApp()->changeState("menu");
         };
     }
-    ~GameState(){
+    ~GameState2(){
         // Don't forget to destroy the renderer
         renderer.destroy();
         // On exit, we call exit for the camera controller system to make sure that the mouse is unlocked

@@ -19,4 +19,10 @@ namespace our {
         function = data.value("function", "");
     }
 
+     void LightComponent::deserialize(const nlohmann::json& data){
+        if(!data.is_object()) return;
+        // Notice how we just get a string from the json file and pass it to the AssetLoader to get us the actual asset
+        
+    }
+
 }

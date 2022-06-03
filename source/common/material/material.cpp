@@ -111,7 +111,7 @@ namespace our {
         roughness = AssetLoader<Texture2D>::get(data.value("roughness", ""));
         emissive = AssetLoader<Texture2D>::get(data.value("emissive", ""));
         specular = AssetLoader<Texture2D>::get(data.value("specular", ""));
-        sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
+        sampler = AssetLoader<Sampler>::get(data.value("sampler", "default"));
     }
 
 }

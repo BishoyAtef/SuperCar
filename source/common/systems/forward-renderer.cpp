@@ -204,43 +204,46 @@ namespace our {
         
           // Draw all the lighted commands
         for (int i=0; i<lightedCommands.size(); i++){
-            lightedCommands[i].material->setup();
+            if(lightedCommands[i].draw) {
+                lightedCommands[i].material->setup();
 
-            glm::mat4 M = lightedCommands[i].localToWorld;
-            glm::mat4 M_IT = glm::transpose(glm::inverse(M));
-            glm::vec3 eye = camera->getOwner()->localTransform.position;
+                glm::mat4 M = lightedCommands[i].localToWorld;
+                glm::mat4 M_IT = glm::transpose(glm::inverse(M));
+                glm::vec3 eye = camera->getOwner()->localTransform.position;
 
-            lightedCommands[i].material->shader->set("M", M);
-            lightedCommands[i].material->shader->set("M_IT", M_IT);
-            lightedCommands[i].material->shader->set("VP", VP);
-            lightedCommands[i].material->shader->set("eye", eye);
+                lightedCommands[i].material->shader->set("M", M);
+                lightedCommands[i].material->shader->set("M_IT", M_IT);
+                lightedCommands[i].material->shader->set("VP", VP);
+                lightedCommands[i].material->shader->set("eye", eye);
 
-            lightedCommands[i].material->shader->set("sky.top", glm::vec3(0.3f, 0.6f, 1.0f));
-            lightedCommands[i].material->shader->set("sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
-            lightedCommands[i].material->shader->set("sky.bottom", glm::vec3( 0.1f, 0.1f, 0.0f));
-            
-            lightedCommands[i].material->shader->set("light_count", 3);
+                // add light here
+                lightedCommands[i].material->shader->set("sky.top", glm::vec3(0.3f, 0.6f, 1.0f));
+                lightedCommands[i].material->shader->set("sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
+                lightedCommands[i].material->shader->set("sky.bottom", glm::vec3( 0.1f, 0.1f, 0.0f));
+                
+                lightedCommands[i].material->shader->set("light_count", 3);
 
-            lightedCommands[i].material->shader->set("lights[0].type", DIRECTIONAL);
-            lightedCommands[i].material->shader->set("lights[0].direction", glm::vec3(1, 0, 0));
-            lightedCommands[i].material->shader->set("lights[0].diffuse", glm::vec3(1, 0.2, 0.1));
-            lightedCommands[i].material->shader->set("lights[0].specular", glm::vec3(1, 0.2, 0.1));
-            
-            lightedCommands[i].material->shader->set("lights[1].type", POINT);
-            lightedCommands[i].material->shader->set("lights[1].position", glm::vec3(0, 1.5f, 0));
-            lightedCommands[i].material->shader->set("lights[1].diffuse", glm::vec3(1, 0.2, 0.1));
-            lightedCommands[i].material->shader->set("lights[1].specular", glm::vec3(1, 0.2, 0.1));
-            lightedCommands[i].material->shader->set("lights[1].attenuation",glm::vec3( 1, 0, 0));
+                lightedCommands[i].material->shader->set("lights[0].type", DIRECTIONAL);
+                lightedCommands[i].material->shader->set("lights[0].direction", glm::vec3(1, 0, 0));
+                lightedCommands[i].material->shader->set("lights[0].diffuse", glm::vec3(1, 0.2, 0.1));
+                lightedCommands[i].material->shader->set("lights[0].specular", glm::vec3(1, 0.2, 0.1));
+                
+                lightedCommands[i].material->shader->set("lights[1].type", POINT);
+                lightedCommands[i].material->shader->set("lights[1].position", glm::vec3(0, 1.5f, 0));
+                lightedCommands[i].material->shader->set("lights[1].diffuse", glm::vec3(1, 0.2, 0.1));
+                lightedCommands[i].material->shader->set("lights[1].specular", glm::vec3(1, 0.2, 0.1));
+                lightedCommands[i].material->shader->set("lights[1].attenuation",glm::vec3( 1, 0, 0));
 
-            lightedCommands[i].material->shader->set("lights[2].type", SPOT);
-            lightedCommands[i].material->shader->set("lights[2].position", glm::vec3( 1, 1, 0));
-            lightedCommands[i].material->shader->set("lights[2].direction", glm::vec3(-1, 0, 0));
-            lightedCommands[i].material->shader->set("lights[2].diffuse", glm::vec3(1, 0.9, 0.7));
-            lightedCommands[i].material->shader->set("lights[2].specular", glm::vec3(1, 0.9, 0.7));
-            lightedCommands[i].material->shader->set("lights[2].attenuation",glm::vec3(1, 0, 0));
-            lightedCommands[i].material->shader->set("lights[2].cone_angles",glm::vec2( glm::radians(10.0f), glm::radians(11.0f)));
+                lightedCommands[i].material->shader->set("lights[2].type", SPOT);
+                lightedCommands[i].material->shader->set("lights[2].position", glm::vec3( 1, 1, 0));
+                lightedCommands[i].material->shader->set("lights[2].direction", glm::vec3(-1, 0, 0));
+                lightedCommands[i].material->shader->set("lights[2].diffuse", glm::vec3(1, 0.9, 0.7));
+                lightedCommands[i].material->shader->set("lights[2].specular", glm::vec3(1, 0.9, 0.7));
+                lightedCommands[i].material->shader->set("lights[2].attenuation",glm::vec3(1, 0, 0));
+                lightedCommands[i].material->shader->set("lights[2].cone_angles",glm::vec2( glm::radians(10.0f), glm::radians(11.0f)));
 
-            lightedCommands[i].mesh->draw();
+                lightedCommands[i].mesh->draw();
+            }
         }
 
         // If there is a sky material, draw the sky

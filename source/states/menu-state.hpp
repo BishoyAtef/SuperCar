@@ -41,7 +41,7 @@ class MenuState: public our::State {
             getApp()->changeState("game");
         };
         if(getApp()->getKeyboard().isPressed(GLFW_KEY_2)){
-            getApp()->changeState("game");
+            getApp()->changeState("game2");
         };
         if(getApp()->getKeyboard().isPressed(GLFW_KEY_Q)){
             glfwSetWindowShouldClose(getApp()->getWindow(), 1);

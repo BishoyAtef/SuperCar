@@ -18,7 +18,7 @@ namespace our {
         // We need to remember the number of elements that will be draw by glDrawElements 
         GLsizei elementCount;
     public:
-
+        
         // The constructor takes two vectors:
         // - vertices which contain the vertex data.
         // - elements which contain the indices of the vertices out of which each rectangle will be constructed.

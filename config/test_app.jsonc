@@ -1,5 +1,5 @@
 {
-    "start-scene": "main",
+    "start-scene": "menu",
     "window":
     {
         "title":"Default Game Window",
@@ -23,6 +23,10 @@
                 "textured":{
                     "vs":"assets/shaders/textured.vert",
                     "fs":"assets/shaders/textured.frag"
+                },
+                "light":{
+                    "vs":"assets/shaders/light.vert",
+                    "fs":"assets/shaders/light.frag"
                 }
             },
             "textures":{
@@ -31,15 +35,17 @@
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
                 "monkey": "assets/textures/monkey.png",
-                "car" : "assets/textures/Car1.png",
-                "road" : "assets/textures/road.jpg"
+                "car" : "assets/textures/car2.jpg",
+                "road" : "assets/textures/road.jpg",
+                "speed" : "assets/textures/speed6.jpg",
+                "menu": "assets/textures/menu.jpg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
-                "car" : "assets/models/car7.obj"
+                "carMesh" : "assets/models/car7.obj"
             },
             "samplers":{
                 "default":{},
@@ -128,9 +134,9 @@
                     "texture": "moon",
                     "sampler": "default"
                 },
-                "car":{
-                    "type": "tinted",
-                    "shader": "tinted",
+                "carMaterial":{
+                    "type": "textured",
+                    "shader": "textured",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -139,7 +145,9 @@
                             "enabled": true
                         }
                     },
-                    "tint": [1, 1, 1, 1]
+                    "tint": [0, 0, 1, 1],
+                    "texture": "car",
+                    "sampler": "default"
                 },
                 "road" : {
                     "type": "textured",
@@ -155,9 +163,65 @@
                     "tint": [1, 1, 1, 1],
                     "texture": "road",
                     "sampler": "default"
+                },
+                "speed" : {
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "speed",
+                    "sampler": "default"
+                },
+                "menu":{
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        },
+                        "blending":{
+                            "enabled": true,
+                            "sourceFactor": "GL_SRC_ALPHA",
+                            "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
+                        },
+                        "depthMask": false
+                    },
+                    "transparent": true,
+                    "tint": [1, 1, 1, 1],
+                    "texture": "menu",
+                    "sampler": "default"
                 }
             }
         },
+        "menuworld":[{
+            "position": [0, 0, 10],
+            "components": [
+                {
+                    "type": "Camera"
+                },
+                {
+                    "type": "Free Camera Controller"
+                }
+            ]},
+            {
+            "scale": [20, 10, 1],
+            "components": [
+                {
+                    "type": "Mesh Renderer",
+                    "mesh": "plane",
+                    "material": "menu"
+            }]}
+        ],
         "world":[
             {
                 "position": [0, 0, 10],
@@ -171,21 +235,26 @@
                 ],
                 "children": [
                     {
-                        "position": [0, -1.9, -1.5],
+                        "position": [0, -1.0, -1.8],
                         "rotation": [0, -90, 0],
                         "scale": [0.009, 0.009, 0.01],
                         "components": [
                             {
                                 "type": "Mesh Renderer",
-                                "mesh": "car",
-                                "material": "moon"
+                                "mesh": "carMesh",
+                                "material": "carMaterial"
+                            },
+                            {
+                                "type": "Collision",
+                                "radius": 1.0,
+                                "store": false
                             }
                         ]
                     }
                 ]
             },
             {   
-                "position": [-5, -1.9, -5],
+                "position": [-5, -1.0, -5],
                 "scale": [1, 1, 1],
                 "rotation": [0, 0, 0],
                 "components": [
@@ -196,14 +265,19 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0, 0.1],
-                        "angularVelocity": [0, 45, 0]
+                        "linearVelocity": [0, 0, 2]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "barrier"
                     }
                 ]
             },
             {
                 "rotation": [0, 0, 0],
-                "position": [5, -1.9, -1],
+                "position": [5, -1.0, -1],
                 "scale": [1, 1, 1],
                 "components": [
                     {
@@ -213,15 +287,20 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0, 0.1],
-                        "angularVelocity": [0, 45, 0]
+                        "linearVelocity": [0, 0, 2]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "barrier"
                     }
                 ]
             },
             {
                 "rotation": [0, 0, 0],
-                "position": [3, -1.9, -15],
-                "scale": [2, 2, 2],
+                "position": [3, -1.0, -15],
+                "scale": [1, 1, 1],
                 "components": [
                     {
                         "type": "Mesh Renderer",
@@ -230,26 +309,101 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0, 0.1],
-                        "angularVelocity": [0, 45, 0]
+                        "linearVelocity": [0, 0, 2]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "barrier"
                     }
                 ]
             },
             {
-                "position": [0, 2.1, -6],
-                "scale": [2, -1.9, 2],
+                "rotation": [0, 0, 0],
+                "position": [3, -1.0, -11],
+                "scale": [1, 1, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 2]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "barrier"
+                    }
+                ]
+            },
+            {
+                "rotation": [0, 0, 0],
+                "position": [0, -1.0, -20],
+                "scale": [1, 1, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 2]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "barrier"
+                    }
+                ]
+            },
+            {
+                "rotation": [0, 0, 0],
+                "position": [0, -1.0, -10],
+                "scale": [1, 1, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 2]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "barrier"
+                    }
+                ]
+            },
+            {
+                "position": [3, -1.0, -6],
+                "scale": [0.7, 0.7, 0.7],
                 "components": [
                     {
                         "type": "Mesh Renderer",
                         "mesh": "sphere",
-                        "material": "moon"
+                        "material": "speed"
                     },
                     {
                         "type": "Movement",
-                        "angularVelocity": [0, 45, 0]
+                        "angularVelocity": [0, 45, 0],
+                        "linearVelocity": [0, 0, 2]
                     },
                     {
-                        
+                        "type": "Collision",
+                        "radius": 1.0,
+                        "store": true,
+                        "function" : "speedup"
                     }
                 ]
             },
@@ -265,7 +419,6 @@
                     }
                 ]
             }
-         
         ]
     }
 }

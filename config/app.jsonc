@@ -122,19 +122,6 @@
                     "roughness": "roughness",
                     "specular": "specular",
                     "sampler": "default"
-                    // "type": "textured",
-                    // "shader": "textured",
-                    // "pipelineState": {
-                    //     "faceCulling":{
-                    //         "enabled": false
-                    //     },
-                    //     "depthTesting":{
-                    //         "enabled": true
-                    //     }
-                    // },
-                    // "tint": [1, 1, 1, 1],
-                    // "texture": "monkey",
-                    // "sampler": "default"
                 },
                 "moon":{
                     "type": "textured",
@@ -180,6 +167,19 @@
                 ]
             },
             {
+                
+                "rotation": [-45, 0, 0],
+                "components": [
+                    {
+                        "type": "light",
+                        "lightType": "directional",
+                        "diffuse": [1.0, 0.9, 0.7],
+                        "sepecular" : [1.0, 0.9, 0.7]
+                    }
+                ]
+
+            },
+            {
                 "rotation": [-45, 0, 0],
                 "components": [
                     {
@@ -192,6 +192,7 @@
                         "linearVelocity": [0, 0.1, 0],
                         "angularVelocity": [0, 45, 0]
                     }
+                
                 ]
             },
             {

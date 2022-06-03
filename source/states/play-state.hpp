@@ -57,12 +57,17 @@ class Playstate: public our::State {
 
 class GameState: public our::State {
 
+    bool loaded = false;
     our::World world;
     our::ForwardRenderer renderer;
     our::GameCameraController cameraController;
     our::GameMovement movementSystem;
 
     void onInitialize() override {
+        if (loaded){
+            return;
+        }
+        loaded = true;
         // First of all, we get the scene configuration from the app config
         auto& config = getApp()->getConfig()["scene"];
         // If we have assets in the scene config, we deserialize them
@@ -88,14 +93,15 @@ class GameState: public our::State {
         cameraController.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
         renderer.render(&world);
-    }
 
-    void onDestroy() override {
+        if(getApp()->getKeyboard().isPressed(GLFW_KEY_Q)){
+            getApp()->changeState("menu");
+        };
+    }
+    ~GameState(){
         // Don't forget to destroy the renderer
         renderer.destroy();
         // On exit, we call exit for the camera controller system to make sure that the mouse is unlocked
-        cameraController.exit();
-        // and we delete all the loaded assets to free memory on the RAM and the VRAM
-        our::clearAllAssets();
+        cameraController.exit();        
     }
 };

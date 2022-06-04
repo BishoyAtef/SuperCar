@@ -224,38 +224,16 @@ namespace our {
                 lightedCommands[i].material->shader->set("sky.middle", glm::vec3(0.3f, 0.3f, 0.3f));
                 lightedCommands[i].material->shader->set("sky.bottom", glm::vec3( 0.1f, 0.1f, 0.0f));
                 
-                // lightedCommands[i].material->shader->set("light_count", 1);
-
-                // lightedCommands[i].material->shader->set("lights[0].type", DIRECTIONAL);
-                // lightedCommands[i].material->shader->set("lights[0].direction", glm::vec3(1, 0, 0));
-                // lightedCommands[i].material->shader->set("lights[0].diffuse", glm::vec3(1, 0.2, 0.1));
-                // lightedCommands[i].material->shader->set("lights[0].specular", glm::vec3(1, 0.2, 0.1));
-                
-                // lightedCommands[i].material->shader->set("lights[1].type", POINT);
-                // lightedCommands[i].material->shader->set("lights[1].position", glm::vec3(0, 1.5f, 0));
-                // lightedCommands[i].material->shader->set("lights[1].diffuse", glm::vec3(1, 0.2, 0.1));
-                // lightedCommands[i].material->shader->set("lights[1].specular", glm::vec3(1, 0.2, 0.1));
-                // lightedCommands[i].material->shader->set("lights[1].attenuation",glm::vec3( 1, 0, 0));
-
-                // lightedCommands[i].material->shader->set("lights[2].type", SPOT);
-                // lightedCommands[i].material->shader->set("lights[2].position", glm::vec3( 1, 1, 0));
-                // lightedCommands[i].material->shader->set("lights[2].direction", glm::vec3(-1, 0, 0));
-                // lightedCommands[i].material->shader->set("lights[2].diffuse", glm::vec3(1, 0.9, 0.7));
-                // lightedCommands[i].material->shader->set("lights[2].specular", glm::vec3(1, 0.9, 0.7));
-                // lightedCommands[i].material->shader->set("lights[2].attenuation",glm::vec3(1, 0, 0));
-                // lightedCommands[i].material->shader->set("lights[2].cone_angles",glm::vec2( glm::radians(10.0f), glm::radians(11.0f)));
-                
-                // std::vector<LightComponent*>lightedComponents= getLightComponents(world);
+               
                 getLightComponents(world);
                 int light_count = lightedComponents.size();  
-                // std::cout<<"Light Count: "<<light_count<<std::endl;
                 lightedCommands[i].material->shader->set("light_count", light_count);
                 for (int j = 0; j < light_count; j++){
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].type", lightedComponents[j]->lightType);
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].position", glm::vec3(0, 1.5f, 0) );
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].diffuse", lightedComponents[j]->diffuse);
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].specular", lightedComponents[j]->specular);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].direction", glm::vec3(1, 0, 0) );
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].direction", glm::vec3(0, -1, -1) );
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].attenuation", lightedComponents[j]->attenuation);
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].cone_angles", lightedComponents[j]->cone_angles);
                 }
@@ -332,14 +310,4 @@ namespace our {
         }
         // std::cout<<lightedComponents.size()<<std::endl;
     }
-    // std::vector<LightComponent*> ForwardRenderer::getLightComponents(World* world){   
-    //  std::vector<LightComponent*>lightedComponents;
-    //     for(auto entity : world->getEntities()){
-    //         std::cout<<"entity: "<<entity<<std::endl;
-    //         LightComponent* lightComponent = entity->getComponent<LightComponent>();
-    //         std::cout<<"lightComponent: "<<lightComponent<<std::endl;
-    //         if(lightComponent) lightedComponents.push_back(lightComponent);
-    //     }
-    //     return lightedComponents;
-    // }
 }

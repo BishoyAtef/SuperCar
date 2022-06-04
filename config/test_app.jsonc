@@ -39,7 +39,14 @@
                 "road" : "assets/textures/road.jpg",
                 "speed" : "assets/textures/speed6.jpg",
                 "menu": "assets/textures/menu3.png",
-                "sun" : "assets/textures/sun.jpg"
+                "sun" : "assets/textures/sun.jpg",
+                "brick" : "assets/textures/brick.jpg",
+                
+                "albedo": "assets/textures/albedo.jpg",
+                "ambient_occlusion": "assets/textures/ambient_occlusion.jpg",
+                "emissive": "assets/textures/emissive.jpg",
+                "roughness": "assets/textures/roughness.jpg",
+                "specular": "assets/textures/specular.jpg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
@@ -77,17 +84,17 @@
                         },
                         "depthTesting":{
                             "enabled": true
-                        },
-                        "blending":{
-                            "enabled": true,
-                            "sourceFactor": "GL_SRC_ALPHA",
-                            "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
-                        },
-                        "depthMask": false
+                        }
+                        // "blending":{
+                        //     "enabled": true,
+                        //     "sourceFactor": "GL_SRC_ALPHA",
+                        //     "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
+                        // },
+                        // "depthMask": false
                     },
-                    "transparent": true,
-                    "tint": [1, 1, 1, 1],
-                    "texture": "glass",
+                    // "transparent": true,
+                    // "tint": [1, 1, 1, 1],
+                    "texture": "brick",
                     "sampler": "pixelated"
                 },
                 "grass":{
@@ -151,8 +158,21 @@
                     "sampler": "default"
                 },
                 "carMaterial":{
-                    "type": "textured",
-                    "shader": "textured",
+                    // "type": "textured",
+                    // "shader": "textured",
+                    // "pipelineState": {
+                    //     "faceCulling":{
+                    //         "enabled": false
+                    //     },
+                    //     "depthTesting":{
+                    //         "enabled": true
+                    //     }
+                    // },
+                    // "tint": [1, 1, 1, 1],
+                    // "texture": "cartex",
+                    // "sampler": "default"
+                    "type": "lighted",
+                    "shader": "light",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -161,8 +181,12 @@
                             "enabled": true
                         }
                     },
-                    "tint": [1, 1, 1, 1],
-                    "texture": "cartex",
+                    "lighted": true,
+                    "albedo": "albedo",
+                    "ambient_occlusion": "ambient_occlusion",
+                    "emissive": "emissive",
+                    "roughness": "roughness",
+                    "specular": "specular",
                     "sampler": "default"
                 },
                 "road" : {
@@ -273,6 +297,22 @@
                     }
                 ]
             },
+
+            {  
+                "rotation": [-45, 0, 0],
+                "components": [
+                    {
+                        "type": "Light",
+                        "lightType": 0,
+                        "diffuse": [1.0, 0.9, 0.7],
+                        "sepecular" : [1.0, 0.9, 0.7]
+                       
+                        // "cone_angles" : [0, 90.0]
+                        // "attenuation": [0.001, 0, 0]
+                    }
+                ]
+            },
+
             {   
                 "position": [-5, -1.0, -5],
                 "scale": [1, 1, 1],

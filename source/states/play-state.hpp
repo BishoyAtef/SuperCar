@@ -89,7 +89,7 @@ class GameState: public our::State {
         renderer.initialize(size, config["renderer"]);
 
         // we initialize the collision components
-        movementSystem.storeCollision(&world);
+        movementSystem.system.storeCollision(&world);
     }
 
     void onDraw(double deltaTime) override {
@@ -154,7 +154,7 @@ class GameState2: public our::State {
         renderer.initialize(size, config["renderer"]);
 
         // storing the collision objects
-        movementSystem.storeCollision(&world);
+        movementSystem.system.storeCollision(&world);
     }
 
     void onDraw(double deltaTime) override {

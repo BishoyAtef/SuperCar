@@ -35,7 +35,7 @@
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
                 "monkey": "assets/textures/monkey.png",
-                "cartex" : "assets/textures/carBack.jpeg",
+                "cartex" : "assets/textures/cartex.jpeg",
                 "road" : "assets/textures/road.jpg",
                 "speed" : "assets/textures/speed6.jpg",
                 "menu": "assets/textures/menu3.png",
@@ -46,7 +46,7 @@
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
-                "carMesh" : "assets/models/car-n.obj"
+                "carMesh" : "assets/models/cartest.obj"
             },
             "samplers":{
                 "default":{},
@@ -253,9 +253,11 @@
                     {
                         "position": [0, -1.0, -1.9],
                         //"rotation": [0, -90, 0],
-                        "rotation": [0, 0, 0],
+                        //"rotation": [0, 0, 0],
+                        "rotation":[0, -180, 0],
                         //"scale": [0.009, 0.009, 0.01],
-                        "scale": [0.4, 0.4, 0.1],
+                        //"scale": [0.4, 0.4, 0.1],
+                        "scale": [0.5, 0.55, 0.25],
                         "components": [
                             {
                                 "type": "Mesh Renderer",

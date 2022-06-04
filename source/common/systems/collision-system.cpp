@@ -30,7 +30,7 @@ namespace our
         // the number of actual hits and number of hits
         // if the number of hits = the number of actual hits
         // then the player loses
-        const int numberOfHits = 2;
+        const int numberOfHits = 4;
         int actualNumberOfHits = 0;
 
         int score = 0;
@@ -120,7 +120,7 @@ namespace our
         void checkSpeedUp(int i) {
             if(collisionObjects[i]->function == "speedup" && !collideBefore[i]){
                 std::cout<<"collision with a speedup"<<std::endl<<std::endl;
-                speedUp +=5;
+                speedUp +=2;
                 score += 10;
                 collideBefore[i] = true;
                 collisionEntities[i]->drawMesh = false;

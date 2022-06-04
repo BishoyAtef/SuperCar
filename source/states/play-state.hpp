@@ -41,7 +41,7 @@ class Playstate: public our::State {
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
-        //renderer.render(&world);
+        renderer.render(&world);
     }
 
     void onDestroy() override {

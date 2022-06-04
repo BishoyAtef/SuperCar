@@ -31,23 +31,4 @@ namespace our {
         // Receives the mesh & material from the AssetLoader by the names given in the json object
         void deserialize(const nlohmann::json& data) override;
     };
-
-
-    class LightComponent : public Component {
-    
-    
-    public:
-        glm::vec3 diffuse = glm::vec3(0, 0, 0);
-        glm::vec3 specular = glm::vec3(0, 0, 0);
-        glm::vec3 attenuation = glm::vec3(1, 0, 0);
-        glm::vec2 coneAngles = glm::vec2(10, 11);
-        // 0 -> directional    2 -> spot(coneAngles)  1-> point(attenuation)
-        int lightType;
-        // The ID of this component type is "Mesh Renderer"
-        static std::string getID() { return "Light"; }
-
-        // Receives the mesh & material from the AssetLoader by the names given in the json object
-        void deserialize(const nlohmann::json& data) override;
-    };
-
 }

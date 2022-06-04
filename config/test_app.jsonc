@@ -12,7 +12,7 @@
     "scene": {
         "renderer":{
             "sky": "assets/textures/my sky.jpg",
-            "postprocess": "assets/shaders/postprocess/vignette.frag"
+            "postprocess": "assets/shaders/postprocess/fog.frag"
         },
         "assets":{
             "shaders":{
@@ -38,7 +38,8 @@
                 "car" : "assets/textures/car2.jpg",
                 "road" : "assets/textures/road.jpg",
                 "speed" : "assets/textures/speed6.jpg",
-                "menu": "assets/textures/menu.jpg"
+                "menu": "assets/textures/menu.jpg",
+                "sun" : "assets/textures/sun.jpg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
@@ -132,6 +133,21 @@
                     },
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
+                    "sampler": "default"
+                },
+                "sunMaterial":{
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "sun",
                     "sampler": "default"
                 },
                 "carMaterial":{
@@ -416,6 +432,21 @@
                         "type": "Mesh Renderer",
                         "mesh": "plane",
                         "material": "road"
+                    }
+                ]
+            },
+            {
+                "position": [0, 0, -50],
+                "scale": [20, 20, 20],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "sunMaterial"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 45, 0]
                     }
                 ]
             }

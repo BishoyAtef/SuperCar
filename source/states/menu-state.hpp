@@ -49,7 +49,7 @@ class MenuState: public our::State {
             &&getApp()->getMouse().getMousePosition()[0]<=1300
             &&getApp()->getMouse().getMousePosition()[1]>=500
             &&getApp()->getMouse().getMousePosition()[1]<=700){
-            getApp()->changeState("game");
+            getApp()->changeState("game2");
         };
         if(getApp()->getKeyboard().isPressed(GLFW_KEY_1)){
             getApp()->changeState("game");
@@ -63,7 +63,11 @@ class MenuState: public our::State {
         if(getApp()->getKeyboard().isPressed(GLFW_KEY_R)){
             getApp()->registerState<GameState>("game");
             getApp()->changeState("game");
-        };  
+        }; 
+        if(getApp()->getKeyboard().isPressed(GLFW_KEY_T)){
+            getApp()->registerState<GameState2>("game2");
+            getApp()->changeState("game2");
+        };
     }
 
     ~MenuState(){

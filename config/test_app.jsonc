@@ -38,7 +38,7 @@
                 "cartex" : "assets/textures/carBack.jpeg",
                 "road" : "assets/textures/road.jpg",
                 "speed" : "assets/textures/speed6.jpg",
-                "menu": "assets/textures/menu.jpg",
+                "menu": "assets/textures/menu3.png",
                 "sun" : "assets/textures/sun.jpg"
             },
             "meshes":{
@@ -220,7 +220,7 @@
             }
         },
         "menuworld":[{
-            "position": [0, 0, 10],
+            "position": [0.0, 0.0, 10.8],
             "components": [
                 {
                     "type": "Camera"

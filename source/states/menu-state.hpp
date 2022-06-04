@@ -37,6 +37,20 @@ class MenuState: public our::State {
         
         // And finally we use the renderer system to draw the scene
         renderer.render(&world);
+        if(getApp()->getMouse().isPressed(GLFW_MOUSE_BUTTON_LEFT)
+            &&getApp()->getMouse().getMousePosition()[0]>=2
+            &&getApp()->getMouse().getMousePosition()[0]<=300
+            &&getApp()->getMouse().getMousePosition()[1]>=500
+            &&getApp()->getMouse().getMousePosition()[1]<=700){
+            getApp()->changeState("game");
+        };
+        if(getApp()->getMouse().isPressed(GLFW_MOUSE_BUTTON_LEFT)
+            &&getApp()->getMouse().getMousePosition()[0]>=950
+            &&getApp()->getMouse().getMousePosition()[0]<=1300
+            &&getApp()->getMouse().getMousePosition()[1]>=500
+            &&getApp()->getMouse().getMousePosition()[1]<=700){
+            getApp()->changeState("game");
+        };
         if(getApp()->getKeyboard().isPressed(GLFW_KEY_1)){
             getApp()->changeState("game");
         };

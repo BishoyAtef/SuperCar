@@ -47,7 +47,7 @@ namespace our
         Texture2D *colorTarget, *depthTarget;
         TexturedMaterial* postprocessMaterial;
 
-        // std::vector<LightComponent*>lightedComponents;
+        std::vector<LightComponent*>lightedComponents;
 
     public:
         // Initialize the renderer including the sky and the Postprocessing objects.
@@ -58,7 +58,8 @@ namespace our
         // This function should be called every frame to draw the given world
         void render(World* world);
         
-        std::vector<LightComponent*> getLightComponents(World* world);
+        // std::vector<LightComponent*> getLightComponents(World* world);
+        void getLightComponents(World* world);
     };
 
 }

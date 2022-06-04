@@ -4,6 +4,9 @@
 #define DIRECTIONAL 0
 #define POINT 1
 #define SPOT 2
+
+#include<iostream>
+
 namespace our {
 
     void ForwardRenderer::initialize(glm::ivec2 windowSize, const nlohmann::json& config){
@@ -242,18 +245,21 @@ namespace our {
                 // lightedCommands[i].material->shader->set("lights[2].attenuation",glm::vec3(1, 0, 0));
                 // lightedCommands[i].material->shader->set("lights[2].cone_angles",glm::vec2( glm::radians(10.0f), glm::radians(11.0f)));
                 
-                std::vector<LightComponent*>lightedComponents= getLightComponents(world);
+                // std::vector<LightComponent*>lightedComponents= getLightComponents(world);
+                getLightComponents(world);
                 int light_count = lightedComponents.size();  
+                // std::cout<<"Light Count: "<<light_count<<std::endl;
                 lightedCommands[i].material->shader->set("light_count", light_count);
-                for (int i = 0; i < light_count; i++){
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].type", lightedComponents[i]->lightType);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].position", glm::vec3(0, 1.5f, 0) );
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].diffuse", lightedComponents[i]->diffuse);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].specular", lightedComponents[i]->specular);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].attenuation", lightedComponents[i]->attenuation);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].direction", glm::vec3(1, 0, 0) );
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lightedComponents[i]->cone_angles);
+                for (int j = 0; j < light_count; j++){
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].type", lightedComponents[j]->lightType);
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].position", glm::vec3(0, 1.5f, 0) );
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].diffuse", lightedComponents[j]->diffuse);
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].specular", lightedComponents[j]->specular);
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].direction", glm::vec3(1, 0, 0) );
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].attenuation", lightedComponents[j]->attenuation);
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].cone_angles", lightedComponents[j]->cone_angles);
                 }
+                lightedComponents.clear();
                 lightedCommands[i].mesh->draw();
             }
         }
@@ -318,12 +324,22 @@ namespace our {
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
     }
-    std::vector<LightComponent*> ForwardRenderer::getLightComponents(World* world){
-        std::vector<LightComponent*>lightedComponents;
+    void ForwardRenderer::getLightComponents(World* world){
         for(auto entity : world->getEntities()){
             LightComponent* lightComponent = entity->getComponent<LightComponent>();
+            // std::cout<<"lightComponent: "<<lightComponent<<std::endl;
             if(lightComponent) lightedComponents.push_back(lightComponent);
         }
-        return lightedComponents;
+        // std::cout<<lightedComponents.size()<<std::endl;
     }
+    // std::vector<LightComponent*> ForwardRenderer::getLightComponents(World* world){   
+    //  std::vector<LightComponent*>lightedComponents;
+    //     for(auto entity : world->getEntities()){
+    //         std::cout<<"entity: "<<entity<<std::endl;
+    //         LightComponent* lightComponent = entity->getComponent<LightComponent>();
+    //         std::cout<<"lightComponent: "<<lightComponent<<std::endl;
+    //         if(lightComponent) lightedComponents.push_back(lightComponent);
+    //     }
+    //     return lightedComponents;
+    // }
 }

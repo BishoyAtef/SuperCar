@@ -1,6 +1,8 @@
 #include "forward-renderer.hpp"
 #include "../mesh/mesh-utils.hpp"
 #include "../texture/texture-utils.hpp"
+#include <glm/gtx/euler_angles.hpp>
+
 #define DIRECTIONAL 0
 #define POINT 1
 #define SPOT 2
@@ -8,6 +10,9 @@
 #include<iostream>
 
 namespace our {
+    glm::vec3 getDirection(glm::vec3 rotation){
+        return glm::yawPitchRoll(rotation[1], rotation[0], rotation[2])*glm::vec4(0,-1,0,0);
+    }
 
     void ForwardRenderer::initialize(glm::ivec2 windowSize, const nlohmann::json& config){
         // First, we store the window size for later use
@@ -229,18 +234,21 @@ namespace our {
                 int light_count = lightedComponents.size();  
                 lightedCommands[i].material->shader->set("light_count", light_count);
                 for (int j = 0; j < light_count; j++){
+                    glm::mat4 M = lightedComponents[j]->getOwner()->getLocalToWorldMatrix();
+                    glm::vec2 angles = lightedComponents[j]->cone_angles;
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].type", lightedComponents[j]->lightType);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].position", glm::vec3(0, 1.5f, 0) );
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].position", glm::vec3(M*glm::vec4(0, 0, 0, 1)));
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].diffuse", lightedComponents[j]->diffuse);
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].specular", lightedComponents[j]->specular);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].direction", glm::vec3(0, -1, -1) );
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].direction", getDirection(lightedComponents[j]->getOwner()->localTransform.rotation) );
                     lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].attenuation", lightedComponents[j]->attenuation);
-                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].cone_angles", lightedComponents[j]->cone_angles);
+                    lightedCommands[i].material->shader->set("lights[" + std::to_string(j) + "].cone_angles", glm::vec2(glm::radians(angles.x), glm::radians(angles.y)));
                 }
                 lightedComponents.clear();
                 lightedCommands[i].mesh->draw();
             }
         }
+
 
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
@@ -310,4 +318,5 @@ namespace our {
         }
         // std::cout<<lightedComponents.size()<<std::endl;
     }
+    
 }

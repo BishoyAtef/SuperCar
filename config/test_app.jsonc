@@ -343,21 +343,29 @@
                                 "store": false
                             }
                         ]
-                    }
-                ]
-            },
-
-            {  
-                "rotation": [-45, 0, 0],
-                "components": [
+                    },
                     {
-                        "type": "Light",
-                        "lightType": 0,
-                        "diffuse": [1.0, 0.9, 0.7],
-                        "sepecular" : [1.0, 0.9, 0.7]
-                       
-                        // "cone_angles" : [0, 90.0]
-                        // "attenuation": [0.001, 0, 0]
+                        "position": [0, 1, 0],
+                        "components": [
+                            {
+                                "type": "Light",
+                                "lightType": 1,
+                                "diffuse": [1.0, 0.9, 0.7],
+                                "sepecular" : [1.0, 0.9, 10],
+                                
+                                // "cone_angles" : [0, 90.0]
+                                "attenuation": [0.1, 0, 0]
+                            }
+                            // {
+                            //     "type": "Light",
+                            //     "lightType": 2,
+                            //     "diffuse": [1.0, 0.9, 10],
+                            //     "sepecular" : [1.0, 0.9, 10],
+                                
+                            //     "cone_angles" : [80, 90],
+                            //     "attenuation": [0.1, 0, 0]
+                            // }
+                        ]
                     }
                 ]
             },
@@ -1169,7 +1177,21 @@
                         "type": "Movement",
                         "angularVelocity": [0, 45, 0]
                     }
-                ]
+                ],
+                "children":[{  
+                    "rotation": [-75, 0, 0],
+                    "components": [
+                        {
+                            "type": "Light",
+                            "lightType": 0,
+                            "diffuse": [1.0, 0.9, 0.7],
+                            "sepecular" : [1.0, 0.9, 0.7]
+                            
+                            // "cone_angles" : [0, 90.0]
+                            // "attenuation": [0.001, 0, 0]
+                        }
+                    ]
+                }]
             },
             //home added
             {

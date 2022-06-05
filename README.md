@@ -7,7 +7,7 @@
 - [Built Using](#build)
 - [Demo and Screenshots](#demo)
 ### 📙About<a name = "about"></a>
-🚗 SuperCar is a 3D infinite survival game in which you trying to avoid obstacles while collecting full icons to keep the journey going which is coded using OpenGL
+🚗 SuperCar is a 3D infinite survival game in which you trying to avoid obstacles while collecting full icons to keep the journey going faster and faster, This icons increases your speed which is coded using OpenGL
 ## 🏁Getting Started <a name = "start"></a>
 ```
 Install Visual Studio Code.

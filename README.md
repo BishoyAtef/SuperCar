@@ -41,8 +41,11 @@ Run this Command  .\bin\GAME_APPLICATION.exe -c="config\test_app.jsonc"
 </div>
 
 ## 📷Screenshots
-![](Images/Capture1.PNG)
-![](Images/Capture2.PNG)
+### Main menu 
+![](README/Images/Menu.PNG)
+### game
+![](README/Images/game1.PNG)
+![](README/Images/game2.PNG)
 ## contributors 
 [![](https://github.com/yousefelmahdy.png?size=100)](https://github.com/yousefelmahdy)
 [![](https://github.com/BishoyAtef.png?size=100)](https://github.com/BishoyAtef)

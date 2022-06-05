@@ -35,7 +35,9 @@ Run this Command  .\bin\GAME_APPLICATION.exe -c="config\test_app.jsonc"
 - OpenGL
 ## 🎥 Demo<a name = "demo"></a>
 <div name = "demo" align="center" width=1189>
-![Demo](https://github.com/BishoyAtef/SuperCar/blob/main/README/Videos/Game.gif)
+  
+![GIFDemo](https://github.com/BishoyAtef/SuperCar/blob/main/README/Videos/Game.gif)
+  
 </div>
 
 ## 📷Screenshots

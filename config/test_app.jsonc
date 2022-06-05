@@ -46,14 +46,31 @@
                 "ambient_occlusion": "assets/textures/ambient_occlusion.jpg",
                 "emissive": "assets/textures/emissive.jpg",
                 "roughness": "assets/textures/roughness.jpg",
-                "specular": "assets/textures/specular.jpg"
+                "specular": "assets/textures/specular.jpg",
+
+                "wood-albedo": "assets/textures/wood-albedo.jpg",
+                "wood-roughness": "assets/textures/wood-roughness.jpg",
+                "wood-specular": "assets/textures/wood-specular.jpg",
+
+                "white": "assets/textures/white.jpg",
+                "black": "assets/textures/black.jpg",
+
+                "metal-albedo": "assets/textures/metal-albedo.jpg",
+                "metal-roughness": "assets/textures/metal-roughness.jpg",
+                "metal-specular": "assets/textures/metal-specular.jpg",
+                
+                "road-emissive": "assets/textures/road-emissive.jpg",
+                "road-albedo": "assets/textures/road-albedo.jpg",
+
+                "home": "assets/textures/home.jpeg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
-                "carMesh" : "assets/models/cartest.obj"
+                "carMesh" : "assets/models/cartest.obj",
+                "home": "assets/models/home.obj"
             },
             "samplers":{
                 "default":{},
@@ -62,6 +79,21 @@
                 }
             },
             "materials":{
+                "homematerial":{
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "home",
+                    "sampler": "default"
+                },
                 "metal":{
                     "type": "tinted",
                     "shader": "tinted",
@@ -76,8 +108,28 @@
                     "tint": [0.45, 0.4, 0.5, 1]
                 },
                 "glass":{
-                    "type": "textured",
-                    "shader": "textured",
+                    // "type": "textured",
+                    // "shader": "textured",
+                    // "pipelineState": {
+                    //     "faceCulling":{
+                    //         "enabled": false
+                    //     },
+                    //     "depthTesting":{
+                    //         "enabled": true
+                    //     }
+                    //     // "blending":{
+                    //     //     "enabled": true,
+                    //     //     "sourceFactor": "GL_SRC_ALPHA",
+                    //     //     "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
+                    //     // },
+                    //     // "depthMask": false
+                    // },
+                    // // "transparent": true,
+                    // // "tint": [1, 1, 1, 1],
+                    // "texture": "brick",
+                    // "sampler": "pixelated"
+                    "type": "lighted",
+                    "shader": "light",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -85,17 +137,14 @@
                         "depthTesting":{
                             "enabled": true
                         }
-                        // "blending":{
-                        //     "enabled": true,
-                        //     "sourceFactor": "GL_SRC_ALPHA",
-                        //     "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
-                        // },
-                        // "depthMask": false
                     },
-                    // "transparent": true,
-                    // "tint": [1, 1, 1, 1],
-                    "texture": "brick",
-                    "sampler": "pixelated"
+                    "lighted": true,
+                    "albedo": "wood-albedo",
+                    "ambient_occlusion": "black",
+                    "emissive": "black",
+                    "roughness": "wood-roughness",
+                    "specular": "wood-specular",
+                    "sampler": "default"
                 },
                 "grass":{
                     "type": "textured",
@@ -182,11 +231,11 @@
                         }
                     },
                     "lighted": true,
-                    "albedo": "albedo",
-                    "ambient_occlusion": "ambient_occlusion",
-                    "emissive": "emissive",
-                    "roughness": "roughness",
-                    "specular": "specular",
+                    "albedo": "metal-albedo",
+                    "ambient_occlusion": "black",
+                    "emissive": "black",
+                    "roughness": "metal-roughness",
+                    "specular": "metal-specular",
                     "sampler": "default"
                 },
                 "road" : {
@@ -1086,12 +1135,24 @@
             {
                 "rotation": [-90, 0, 0],
                 "position": [0, -2, -2],
-                "scale": [15, 15, 20],
+                "scale": [10, 10, 20],
                 "components": [
                     {
                         "type": "Mesh Renderer",
                         "mesh": "plane",
                         "material": "road"
+                    }
+                ]
+            },
+            {
+                "rotation": [-90, 0, 0],
+                "position": [0, -3, 0],
+                "scale": [40, 20, 20],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "grass"
                     }
                 ]
             },
@@ -1107,6 +1168,141 @@
                     {
                         "type": "Movement",
                         "angularVelocity": [0, 45, 0]
+                    }
+                ]
+            },
+            //home added
+            {
+                "position": [13, -2, 0],
+                "scale": [1, 1, 1],
+                "rotation": [0, 90, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "home",
+                        "material": "homematerial"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 1]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 3.5,
+                        "store": true,
+                        "function": "home"
+                    }
+                ]
+            },
+            {
+                "position": [-13, -2, 0],
+                "scale": [1, 1, 1],
+                "rotation": [0, 90, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "home",
+                        "material": "homematerial"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 1]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 3.5,
+                        "store": true,
+                        "function": "home"
+                    }
+                ]
+            },
+            //-----------------------------------------------------------------
+            {
+                "position": [13, -2, -10],
+                "scale": [1, 1, 1],
+                "rotation": [0, 90, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "home",
+                        "material": "homematerial"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 1]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 3.5,
+                        "store": true,
+                        "function": "home"
+                    }
+                ]
+            },
+            {
+                "position": [-13, -2, -10],
+                "scale": [1, 1, 1],
+                "rotation": [0, 90, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "home",
+                        "material": "homematerial"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 1]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 3.5,
+                        "store": true,
+                        "function": "home"
+                    }
+                ]
+            },
+            //------------------------------------
+            {
+                "position": [13, -2, -20],
+                "scale": [1, 1, 1],
+                "rotation": [0, 90, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "home",
+                        "material": "homematerial"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 1]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 3.5,
+                        "store": true,
+                        "function": "home"
+                    }
+                ]
+            },
+            {
+                "position": [-13, -2, -20],
+                "scale": [1, 1, 1],
+                "rotation": [0, 90, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "home",
+                        "material": "homematerial"
+                    },
+                    {
+                        "type": "Movement",
+                        "linearVelocity": [0, 0, 1]
+                    },
+                    {
+                        "type": "Collision",
+                        "radius": 3.5,
+                        "store": true,
+                        "function": "home"
                     }
                 ]
             }

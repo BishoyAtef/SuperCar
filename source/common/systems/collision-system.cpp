@@ -35,6 +35,8 @@ namespace our
 
         int score = 0;
 
+        bool homeCollsion = false;
+
         public:
 
         // the speedup of the car
@@ -107,7 +109,8 @@ namespace our
                     checkSpeedUp(i);
                     // checking that the collision is with a barrier object
                     checkBarrier(i);
-                  
+                    // checking that the collision is with a home object
+                    checkHome(i);
                 }
             }
         }
@@ -128,6 +131,20 @@ namespace our
             }
         }
 
+        void checkHome(int i) {
+            if(collisionObjects[i]->function == "home" && !collideBefore[i]){
+                homeCollsion = true;
+                std::cout<<"collision with a home"<<std::endl<<std::endl;
+                //speedUp +=2;
+                //score += 10;
+                collideBefore[i] = true;
+                collisionEntities[i]->drawMesh = false;
+                numOfCollisions --;
+                actualNumberOfHits ++;
+                score = (score <= 0)?0:score-1;
+            }
+        }
+
          /**
          * @brief this function checks the collision with a barrier
          * 
@@ -140,6 +157,7 @@ namespace our
                 collisionEntities[i]->drawMesh = false;
                 numOfCollisions --;
                 actualNumberOfHits ++;
+                score = (score <= 0)?0:score-1;
             }
 
         }
@@ -184,7 +202,7 @@ namespace our
          */
         bool checkLose() {
             std::cout<<"Number of hits is "<<actualNumberOfHits<<std::endl<<std::endl;
-            if(actualNumberOfHits >= numberOfHits) {
+            if(homeCollsion || actualNumberOfHits >= numberOfHits ) {
                 std::cout<<"YOU Lose , You hitted 2 barriers"<<std::endl<<std::endl;
                 return true;
             }
